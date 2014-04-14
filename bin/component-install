@@ -114,7 +114,7 @@ resolve({
     var version = dep[1];
     // if the dependency, don't install.
     // not sure if this is correct behavior.
-    if (json.dependencies[name]) return;
+    //if (json.dependencies[name]) return;
     // if we're installing "any" version,
     // add a corresponding ^ or ~ to the current version
     if (!version) {

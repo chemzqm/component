@@ -1,6 +1,7 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --harmony
 
 var program = require('commander');
+var Remotes = require('remotes');
 
 /**
  * Options.
@@ -9,6 +10,7 @@ var program = require('commander');
 program
   .usage('[name ...]')
   .option('-d, --dev', 'install development dependencies')
+  .option('-f, --force', 'perform tag check for new versions, for one component only')
   .option('-p, --proxy', 'use a proxy, eg. http://localhost:3128')
   // .option('-p, --proxy <proxy>', 'use a proxy, eg. http://localhost:3128')
   .parse(process.argv);
@@ -62,6 +64,19 @@ var options = {
   install: true,
   verbose: true,
 };
+
+
+var remotes = Remotes();
+remotes.use(new Remotes.global({
+  force: program.force
+}));
+remotes.use(new Remotes.local({
+  dir: 'components',
+  local: true
+}))
+
+options.remotes = remotes;
+
 
 // Install everything in the dependency tree
 if (!dependencies.length) {
